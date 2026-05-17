@@ -1,5 +1,6 @@
 ﻿using Application.Servces.UserService;
 using Application.Servces.UserService.DTOs;
+using Domain.Entites;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -19,6 +20,28 @@ namespace API.Controllers
         {
             await _userService.CreateUser(input);
             return Ok();
+        }
+
+
+        [HttpPost("UpdateUser")]
+        public async Task<IActionResult> UpdateUser([FromBody] UpdateUserDto input)
+        {
+            await _userService.UpdateUser(input);
+            return Ok();
+        }
+
+        [HttpGet("GetUserById")]
+        public async Task<IActionResult> GetUserById(int id)
+        {
+            var user = await _userService.GetUserById(id);
+            return Ok(user);
+        }
+
+        [HttpGet("GetAllUsers")]
+        public async Task<IActionResult> GetAllUsers(string? name, SystemRole? role)
+        {
+            var users = await _userService.GetAllUsers(name, role);
+            return Ok(users);
         }
     }
 }

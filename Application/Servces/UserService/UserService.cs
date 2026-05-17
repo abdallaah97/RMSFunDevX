@@ -34,5 +34,69 @@ namespace Application.Servces.UserService
             await _userRepository.InsertAsync(user);
             await _userRepository.SaveChangesAsync();
         }
+
+        public async Task UpdateUser(UpdateUserDto input)
+        {
+            var user = await _userRepository.GetByIdAsync(input.Id);
+
+            var isEmailExist = await _userRepository.GetAll().AnyAsync(u => u.Email == input.Email && u.Id != input.Id);
+            if (isEmailExist)
+            {
+                throw new Exception("Email already exists.");
+            }
+
+            user.Name = input.Name;
+            user.Email = input.Email;
+            user.PhoneNumber = input.PhoneNumber;
+
+
+            _userRepository.Update(user);
+            await _userRepository.SaveChangesAsync();
+        }
+
+        public async Task<GetUserDto> GetUserById(int id)
+        {
+            var user = await _userRepository.GetByIdAsync(id);
+
+            var userDto = new GetUserDto
+            {
+                Id = user.Id,
+                Name = user.Name,
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber,
+                RoleId = user.RoleId
+            };
+
+            return userDto;
+        }
+
+
+        public async Task<List<GetUserDto>> GetAllUsers(string? name, SystemRole? role)
+        {
+            var users = _userRepository.GetAll();
+
+            if (!string.IsNullOrEmpty(name))
+            {
+                users = users.Where(u => u.Name.Contains(name));
+            }
+
+            if (role != null)
+            {
+                users = users.Where(u => u.Role.Code == role);
+            }
+
+
+            List<GetUserDto> userDto = users.Select(user => new GetUserDto
+            {
+                Id = user.Id,
+                Name = user.Name,
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber,
+                RoleId = user.RoleId
+            }).ToList();
+
+            return userDto;
+        }
     }
+
 }
