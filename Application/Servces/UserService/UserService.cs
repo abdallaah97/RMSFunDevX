@@ -21,7 +21,8 @@ namespace Application.Servces.UserService
                 Email = input.Email,
                 PhoneNumber = input.PhoneNumber,
                 Password = input.Password,
-                RoleId = input.RoleId
+                RoleId = input.RoleId,
+                CreatedAt = DateTime.UtcNow,
             };
 
 

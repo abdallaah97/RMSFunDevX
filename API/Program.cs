@@ -1,8 +1,9 @@
 using Application.Repositories;
+using Application.Servces.UserService;
 using Infrastructre.Context;
+using Infrastructre.Data;
 using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
-using Application.Servces.UserService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,9 +19,13 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped(typeof(IUserService), typeof(UserService));
 
-    
 var app = builder.Build();
 
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    UserSeedData.UserSeed(services);    
+}
 // Configure the HTTP request pipeline.
 
 app.UseHttpsRedirection();

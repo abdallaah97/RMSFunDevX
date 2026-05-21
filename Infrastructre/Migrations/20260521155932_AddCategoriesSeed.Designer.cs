@@ -4,6 +4,7 @@ using Infrastructre.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructre.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260521155932_AddCategoriesSeed")]
+    partial class AddCategoriesSeed
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -49,35 +52,35 @@ namespace Infrastructre.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2026, 5, 21, 15, 59, 31, 15, DateTimeKind.Utc).AddTicks(2182),
                             Description = "Issues related to physical components of computers and devices.",
                             Name = "Hardware"
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2026, 5, 21, 15, 59, 31, 15, DateTimeKind.Utc).AddTicks(2857),
                             Description = "Issues related to applications, operating systems, and software functionality.",
                             Name = "Software"
                         },
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2026, 5, 21, 15, 59, 31, 15, DateTimeKind.Utc).AddTicks(2860),
                             Description = "Issues related to connectivity, internet access, and network performance.",
                             Name = "Network"
                         },
                         new
                         {
                             Id = 4,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2026, 5, 21, 15, 59, 31, 15, DateTimeKind.Utc).AddTicks(2862),
                             Description = "Issues related to cybersecurity threats, data breaches, and security vulnerabilities.",
                             Name = "Security"
                         },
                         new
                         {
                             Id = 5,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2026, 5, 21, 15, 59, 31, 15, DateTimeKind.Utc).AddTicks(2865),
                             Description = "Miscellaneous issues that do not fit into the above categories.",
                             Name = "Other"
                         });

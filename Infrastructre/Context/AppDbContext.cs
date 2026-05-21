@@ -1,4 +1,5 @@
 ﻿using Domain.Entites;
+using Infrastructre.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructre.Context
@@ -29,6 +30,8 @@ namespace Infrastructre.Context
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
 
             base.OnModelCreating(modelBuilder);
+
+            CategorySeedData.Seed(modelBuilder);
         }
 
     }
