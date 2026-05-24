@@ -1,10 +1,12 @@
 ﻿using Application.Servces.UserService;
 using Application.Servces.UserService.DTOs;
 using Domain.Entites;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
+    [Authorize(Roles = "TechnicianAdmin")]
     [Route("api/[controller]")]
     [ApiController]
     public class UsersController : ControllerBase
@@ -14,6 +16,7 @@ namespace API.Controllers
         {
             _userService = userService;
         }
+
 
         [HttpPost("CreateUser")]
         public async Task<IActionResult> CreateUser([FromBody] CreateUserDto input)
@@ -36,6 +39,7 @@ namespace API.Controllers
             var user = await _userService.GetUserById(id);
             return Ok(user);
         }
+
 
         [HttpGet("GetAllUsers")]
         public async Task<IActionResult> GetAllUsers(string? name, SystemRole? role)

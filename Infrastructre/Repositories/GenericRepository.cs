@@ -20,6 +20,11 @@ namespace Infrastructure.Repositories
             _dbSet.Remove(input);
         }
 
+        public void DeleteRange(IEnumerable<T> input)
+        {
+            _dbSet.RemoveRange(input);
+        }
+
         public IQueryable<T> GetAll()
         {
             var data = _dbSet.AsQueryable();

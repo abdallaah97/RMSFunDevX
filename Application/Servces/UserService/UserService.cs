@@ -1,6 +1,7 @@
 ﻿using Application.Repositories;
 using Application.Servces.UserService.DTOs;
 using Domain.Entites;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Servces.UserService
@@ -32,6 +33,9 @@ namespace Application.Servces.UserService
                 throw new Exception("Email already exists.");
             }
 
+            var passwordHasher = new PasswordHasher<User>();
+            user.Password = passwordHasher.HashPassword(user, input.Password);
+
             await _userRepository.InsertAsync(user);
             await _userRepository.SaveChangesAsync();
         }
@@ -57,7 +61,7 @@ namespace Application.Servces.UserService
 
         public async Task<GetUserDto> GetUserById(int id)
         {
-            var user = await _userRepository.GetByIdAsync(id);
+            var user = await _userRepository.GetAll().Include(u => u.Role).FirstOrDefaultAsync(u => u.Id == id);
 
             var userDto = new GetUserDto
             {
@@ -65,7 +69,7 @@ namespace Application.Servces.UserService
                 Name = user.Name,
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber,
-                RoleId = user.RoleId
+                Role = user.Role.Code
             };
 
             return userDto;
@@ -86,6 +90,8 @@ namespace Application.Servces.UserService
                 users = users.Where(u => u.Role.Code == role);
             }
 
+            users = users.Include(u => u.Role);
+
 
             List<GetUserDto> userDto = users.Select(user => new GetUserDto
             {
@@ -93,7 +99,7 @@ namespace Application.Servces.UserService
                 Name = user.Name,
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber,
-                RoleId = user.RoleId
+                Role = user.Role.Code
             }).ToList();
 
             return userDto;

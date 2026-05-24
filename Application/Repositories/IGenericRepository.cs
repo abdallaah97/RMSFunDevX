@@ -5,6 +5,7 @@
         public IQueryable<T> GetAll();
         public IEnumerable<T> GetAllList();
         public void Delete(T input);
+        public void DeleteRange(IEnumerable<T> input);
         public void Update(T input);
         public T GetById(int id);
         public Task<T> GetByIdAsync(int id);
