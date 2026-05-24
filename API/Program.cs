@@ -1,6 +1,8 @@
 using Application.Repositories;
 using Application.Servces.AuthService;
 using Application.Servces.CurrentUserService;
+using Application.Servces.RequestService;
+using Application.Servces.TechnicianUserService;
 using Application.Servces.UserService;
 using Infrastructre.Context;
 using Infrastructre.Data;
@@ -81,6 +83,8 @@ builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepositor
 builder.Services.AddScoped(typeof(IUserService), typeof(UserService));
 builder.Services.AddScoped(typeof(IAuthService), typeof(AuthService));
 builder.Services.AddScoped(typeof(ICurrentUserService), typeof(CurrentUserService));
+builder.Services.AddScoped(typeof(IRequestService), typeof(RequestService));
+builder.Services.AddScoped(typeof(ITechnicianUserService), typeof(TechnicianUserService));
 
 var app = builder.Build();
 

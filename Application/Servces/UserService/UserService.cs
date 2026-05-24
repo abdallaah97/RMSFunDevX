@@ -104,6 +104,20 @@ namespace Application.Servces.UserService
 
             return userDto;
         }
+
+        public async Task ChangePasswordAsync(ChangeUserPasswordInputDto input)
+        {
+            var user = await _userRepository.GetByIdAsync(input.UserId);
+
+            var passwordHasher = new PasswordHasher<User>();
+            if (input.NewPassword != input.ConfirmNewPassword)
+            {
+                throw new Exception("New password and confirm new password do not match");
+            }
+            user.Password = passwordHasher.HashPassword(user, input.NewPassword);
+            _userRepository.Update(user);
+            await _userRepository.SaveChangesAsync();
+        }
     }
 
 }

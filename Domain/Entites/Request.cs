@@ -16,7 +16,7 @@
         public DateTime? ResolvedDate { get; set; }
         public RequestPriority Priority { get; set; }
         public string? EmployeeNote { get; set; }
-        public string? TechnicianNote { get; set; }
+        public string? TechnicianNote { get; set; } 
         public string? PhotoUrl { get; set; }
         public ICollection<RequestHistory> RequestHistories { get; set; }
     }
@@ -24,9 +24,11 @@
     public enum RequestStatus
     {
         Pending = 1,
-        InProgress = 2,
-        Resolved = 3,
-        Closed = 4
+        Assigned = 2,
+        InProgress = 3,
+        Resolved = 4,
+        Closed = 5,
+        Cancelled = 6,
     }
 
     public enum RequestPriority

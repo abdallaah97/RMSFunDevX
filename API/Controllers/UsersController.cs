@@ -47,5 +47,12 @@ namespace API.Controllers
             var users = await _userService.GetAllUsers(name, role);
             return Ok(users);
         }
+
+        [HttpPost("ChangePassword")]
+        public async Task<IActionResult> ChangePassword([FromBody] ChangeUserPasswordInputDto input)
+        {
+            await _userService.ChangePasswordAsync(input);
+            return Ok();
+        }
     }
 }
