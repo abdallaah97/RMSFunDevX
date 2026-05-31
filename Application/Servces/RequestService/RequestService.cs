@@ -1,6 +1,7 @@
-﻿using Application.Repositories;
+using Application.Repositories;
 using Application.Servces.CurrentUserService;
 using Application.Servces.RequestService.DTOs;
+using Application.Servces.FileService;
 using Domain.Entites;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,12 +13,14 @@ namespace Application.Servces.RequestService
         private readonly IGenericRepository<Request> _requestRepository;
         private readonly IGenericRepository<RequestHistory> _requestHistoryRepository;
         private readonly ICurrentUserService _currentUserService;
-        public RequestService(IGenericRepository<Category> categoryRepository, IGenericRepository<Request> requestRepository, IGenericRepository<RequestHistory> requestHistoryRepository, ICurrentUserService currentUserService)
+        private readonly IFileService _fileService;
+        public RequestService(IGenericRepository<Category> categoryRepository, IGenericRepository<Request> requestRepository, IGenericRepository<RequestHistory> requestHistoryRepository, ICurrentUserService currentUserService, IFileService fileService)
         {
             _categoryRepository = categoryRepository;
             _requestRepository = requestRepository;
             _requestHistoryRepository = requestHistoryRepository;
             _currentUserService = currentUserService;
+            _fileService = fileService;
         }
 
         public async Task CreateRequest(SaveRequestInputDto input)
@@ -33,6 +36,11 @@ namespace Application.Servces.RequestService
                 Status = RequestStatus.Pending,
                 EmployeeId = _currentUserService.UserId.Value
             };
+
+            if (input.Photo != null)
+            {
+                request.PhotoUrl = await _fileService.SaveFileAsync(input.Photo, "requests");
+            }
 
             await _requestRepository.InsertAsync(request);
             await _requestRepository.SaveChangesAsync();
@@ -53,6 +61,11 @@ namespace Application.Servces.RequestService
             request.Priority = input.Priority;
             request.Location = input.Location;
             request.CategoryId = input.CategoryId;
+
+            if (input.Photo != null)
+            {
+                request.PhotoUrl = await _fileService.SaveFileAsync(input.Photo, "requests");
+            }
 
             _requestRepository.Update(request);
             await _requestRepository.SaveChangesAsync();
@@ -182,7 +195,8 @@ namespace Application.Servces.RequestService
                 EmployeeName = r.Employee.Name,
                 TechnicianName = r.Technician != null ? r.Technician.Name : null,
                 CreatedAt = r.CreatedAt,
-                Priority = r.Priority
+                Priority = r.Priority,
+                PhotoUrl = r.PhotoUrl
             }).ToList();
             return result;
         }
@@ -227,7 +241,8 @@ namespace Application.Servces.RequestService
                 EmployeeName = r.Employee.Name,
                 TechnicianName = r.Technician != null ? r.Technician.Name : null,
                 CreatedAt = r.CreatedAt,
-                Priority = r.Priority
+                Priority = r.Priority,
+                PhotoUrl = r.PhotoUrl
             }).ToList();
             return result;
         }

@@ -13,6 +13,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using API.Hubs;
+using API.Providers;
+using Microsoft.AspNetCore.SignalR;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -85,6 +88,20 @@ builder.Services.AddScoped(typeof(IAuthService), typeof(AuthService));
 builder.Services.AddScoped(typeof(ICurrentUserService), typeof(CurrentUserService));
 builder.Services.AddScoped(typeof(IRequestService), typeof(RequestService));
 builder.Services.AddScoped(typeof(ITechnicianUserService), typeof(TechnicianUserService));
+builder.Services.AddScoped(typeof(Application.Servces.ChatService.IChatService), typeof(Application.Servces.ChatService.ChatService));
+builder.Services.AddScoped(typeof(Application.Servces.FileService.IFileService), typeof(Application.Servces.FileService.FileService));
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("CorsPolicy", builder => builder
+        .SetIsOriginAllowed((host) => true)
+        .AllowAnyMethod()
+        .AllowAnyHeader()
+        .AllowCredentials());
+});
+
+builder.Services.AddSignalR();
+builder.Services.AddSingleton<IUserIdProvider, CustomUserIdProvider>();
 
 var app = builder.Build();
 
@@ -96,6 +113,7 @@ using (var scope = app.Services.CreateScope())
 // Configure the HTTP request pipeline.
 
 app.UseHttpsRedirection();
+app.UseStaticFiles();
 
 app.UseSwagger();
 app.UseSwaggerUI();
@@ -104,6 +122,9 @@ app.UseSwaggerUI();
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.UseCors("CorsPolicy");
+
 app.MapControllers();
+app.MapHub<ChatHub>("/chatHub");
 
 app.Run();

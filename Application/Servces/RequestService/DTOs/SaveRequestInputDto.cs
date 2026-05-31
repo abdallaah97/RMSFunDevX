@@ -1,4 +1,5 @@
-﻿using Domain.Entites;
+using Domain.Entites;
+using Microsoft.AspNetCore.Http;
 
 namespace Application.Servces.RequestService.DTOs
 {
@@ -10,5 +11,6 @@ namespace Application.Servces.RequestService.DTOs
         public string Location { get; set; }
         public int CategoryId { get; set; }
         public RequestPriority Priority { get; set; }
+        public IFormFile? Photo { get; set; }
     }
 }

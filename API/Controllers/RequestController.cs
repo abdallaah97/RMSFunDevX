@@ -1,4 +1,4 @@
-﻿using Application.Servces.RequestService;
+using Application.Servces.RequestService;
 using Application.Servces.RequestService.DTOs;
 using Domain.Entites;
 using Microsoft.AspNetCore.Authorization;
@@ -27,7 +27,7 @@ namespace API.Controllers
 
         [Authorize(Roles = "Employee")]
         [HttpPost("CreateRequest")]
-        public async Task<IActionResult> CreateRequest([FromBody] SaveRequestInputDto input)
+        public async Task<IActionResult> CreateRequest([FromForm] SaveRequestInputDto input)
         {
             await _requestService.CreateRequest(input);
             return Ok();
@@ -35,7 +35,7 @@ namespace API.Controllers
 
         [Authorize(Roles = "Employee")]
         [HttpPut("UpdateRequest")]
-        public async Task<IActionResult> UpdateRequest([FromBody] SaveRequestInputDto input)
+        public async Task<IActionResult> UpdateRequest([FromForm] SaveRequestInputDto input)
         {
             await _requestService.UpdateRequest(input);
             return Ok();

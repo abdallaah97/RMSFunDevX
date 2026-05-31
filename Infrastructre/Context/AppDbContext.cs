@@ -1,4 +1,4 @@
-﻿using Domain.Entites;
+using Domain.Entites;
 using Infrastructre.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,6 +16,7 @@ namespace Infrastructre.Context
         public DbSet<Request> Requests { get; set; }
         public DbSet<RequestHistory> RequestHistories { get; set; }
         public DbSet<RefreshToken> RefreshTokens { get; set; }
+        public DbSet<ChatMessage> ChatMessages { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

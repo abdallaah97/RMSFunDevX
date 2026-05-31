@@ -1,4 +1,4 @@
-﻿using Domain.Entites;
+using Domain.Entites;
 
 namespace Application.Servces.RequestService.DTOs
 {
@@ -29,5 +29,6 @@ namespace Application.Servces.RequestService.DTOs
             }
         }
         public DateTime CreatedAt { get; set; }
+        public string? PhotoUrl { get; set; }
     }
 }
